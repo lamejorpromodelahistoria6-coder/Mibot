@@ -1,4 +1,5 @@
 import discord
+import os
 from flask import Flask
 from threading import Thread
 
@@ -20,4 +21,4 @@ client = discord.Client(intents=intents)
 async def on_ready():
     print(f"✅ Online: {client.user}")
 
-client.run("TU_TOKEN_AQUI")
+client.run(os.environ["TOKEN"]);
