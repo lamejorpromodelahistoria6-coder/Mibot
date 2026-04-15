@@ -1,33 +1,34 @@
-import discord
 import os
+import sys
+import discord
 from flask import Flask
 from threading import Thread
-import logging
-
-logging.basicConfig(level=logging.INFO)
 
 app = Flask("")
 
 @app.route("/")
 def home():
-    return "Bot online"
+    return "online"
 
-def run_flask():
-    app.run(host="0.0.0.0", port=8080)
+Thread(target=lambda: app.run(host="0.0.0.0", port=8080), daemon=True).start()
 
-Thread(target=run_flask, daemon=True).start()
+TOKEN = os.environ.get("TOKEN")
+
+if not TOKEN:
+    print("ERROR: TOKEN no encontrado", flush=True)
+    sys.exit(1)
+
+print(f"Token OK, largo: {len(TOKEN)}", flush=True)
 
 intents = discord.Intents.default()
-intents.message_content = True
 client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
-    print(f"✅ Online: {client.user}")
+    print(f"Bot online: {client.user}", flush=True)
 
-token = os.environ.get("TOKEN")
-if not token:
-    print("❌ ERROR: No se encontró el TOKEN")
-else:
-    print("🔑 Token encontrado, conectando...")
-    client.run(token)
+try:
+    client.run(TOKEN)
+except Exception as e:
+    print(f"Error al conectar: {e}", flush=True)
+    sys.exit(1)
