@@ -521,4 +521,4 @@ async def quitardinero(ctx, member: discord.Member, cantidad: int):
     usuario["billetera"] = max(0, usuario["billetera"] - cantidad)
     actualizar_usuario(str(member.id), usuario)
     await ctx.send(f"Le quitaste {cantidad} monedas a {member.name}.")
-bot.run(os.environ["TOKEN"])
+bot.run(os.environ["TOKE
